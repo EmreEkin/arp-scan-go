@@ -22,39 +22,31 @@ Sadece IP ve MAC Adreslerini Gösterme: Belirtilen IP aralığındaki cihazları
 
 ```
 ./arp_scan -range 192.168.1.0/24
-Bu komut, IP aralığındaki her cihazın IP ve MAC adreslerini listeler.
+* Bu komut, IP aralığındaki her cihazın IP ve MAC adreslerini listeler. *
 ```
-MAC Vendor Bilgisiyle Gösterme: Eğer her cihazın MAC adresinin üretici bilgisini de görmek isterseniz:
+* MAC Vendor Bilgisiyle Gösterme: Eğer her cihazın MAC adresinin üretici bilgisini de görmek isterseniz: *
 
 ```
-
 ./arp_scan -range 192.168.1.0/24 -vendor
-Bu komut, her cihazın IP ve MAC adresinin yanı sıra, MAC adresinin üreticisini (vendor) de listeler.
+* Bu komut, her cihazın IP ve MAC adresinin yanı sıra, MAC adresinin üreticisini (vendor) de listeler. *
 ```
-
-
+```
 ./arp_scan -h
-Bu komut, programın nasıl kullanılacağı hakkında bilgi verir.
+* Bu komut, programın nasıl kullanılacağı hakkında bilgi verir.
 ```
 ### Örnek Çıktılar:
-MAC Vendor Bilgisi ile Çıktı:
+* MAC Vendor Bilgisi ile Çıktı:
 
 ```
-
 IP: 192.168.1.1 - MAC: 00:11:22:33:44:55 - Üretici: Cisco Systems
 IP: 192.168.1.2 - MAC: 66:77:88:99:AA:BB - Üretici: TP-Link Technologies
 
-```
-```
 IP: 192.168.1.1 - MAC: 00:11:22:33:44:55
 IP: 192.168.1.2 - MAC: 66:77:88:99:AA:BB
 ```
 ### Kurulum
-
 ```
 go get github.com/mdlayher/arp
-
 go build arp_scan.go
-
 ./arp_scan -range 192.168.1.0/24 -vendor
 ```
