@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"net/http"
 	"os"
 	"strings"
 	"time"
-	"net/http"
 
 	"github.com/mdlayher/arp"
 )
@@ -70,7 +70,7 @@ func main() {
 	help := flag.Bool("h", false, "Kullanim bilgilerini göster")
 	flag.Parse()
 
-	// Yardım 
+	// Yardım
 	if *help {
 		fmt.Println("Kullanim: ./arp_scan [seçenekler]")
 		fmt.Println("Seçenekler:")
@@ -83,21 +83,21 @@ func main() {
 	// Ağ arayüzü
 	iface, err := getDefaultInterface()
 	if err != nil {
-		log.Fatalf("Ağ arayüzü bulunamadi: %v", err)
+		log.Fatalf("Ag arayuzu bulunamadi: %v", err)
 	}
-	fmt.Printf("Kullanilan arayüz: %s\n", iface.Name)
+	fmt.Printf("Kullanilan arayuz: %s\n", iface.Name)
 
 	// ARP istemcisi
 	client, err := arp.New(iface)
 	if err != nil {
-		log.Fatalf("ARP istemcisi oluşturulamadi: %v", err)
+		log.Fatalf("ARP istemcisi olusturulamadi: %v", err)
 	}
 	defer client.Close()
 
 	// IP araligi parse
 	ips, err := parseIPRange(*rangeFlag)
 	if err != nil {
-		log.Fatalf("Geçersiz IP araligi: %v", err)
+		log.Fatalf("Gecersiz IP araligi: %v", err)
 	}
 
 	// IP araligi
@@ -105,7 +105,7 @@ func main() {
 		parsedIP := net.ParseIP(ip)
 		mac, err := client.Resolve(parsedIP)
 		if err != nil {
-			continue 
+			continue
 		}
 
 		//MAC adresi ve IP araligi
