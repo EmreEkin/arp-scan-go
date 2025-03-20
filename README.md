@@ -11,11 +11,11 @@ Program, terminal üzerinden çalıştırılabilir ve çeşitli bayraklarla kont
 
 ### Komut Yapısı:
 
-./arp_scan [seçenekler]
+./arp_scan -h 
 Seçenekler:
--range <IP aralığı>: Taranacak IP aralığını belirtir. Varsayılan olarak 192.168.1.0/24 kullanılır.
--vendor: MAC adresinin üretici bilgilerini gösterir. Bu bayrak belirtilmezse, sadece IP ve MAC adresi yazdırılır.
--h: Kullanım bilgilerini gösterir.
+1. -range <IP aralığı>: Taranacak IP aralığını belirtir. Varsayılan olarak 192.168.1.0/24 kullanılır.
+2. -vendor: MAC adresinin üretici bilgilerini gösterir. Bu bayrak belirtilmezse, sadece IP ve MAC adresi yazdırılır.
+3. -h: Kullanım bilgilerini gösterir.
 Örnek Kullanımlar:
 Sadece IP ve MAC Adreslerini Gösterme: Belirtilen IP aralığındaki cihazların IP ve MAC adreslerini görmek için:
 
@@ -31,9 +31,7 @@ MAC Vendor Bilgisiyle Gösterme: Eğer her cihazın MAC adresinin üretici bilgi
 ./arp_scan -range 192.168.1.0/24 -vendor
 Bu komut, her cihazın IP ve MAC adresinin yanı sıra, MAC adresinin üreticisini (vendor) de listeler.
 ```
-Yardım Bilgilerini Gösterme: Kullanım talimatlarını görmek için:
 
-```
 
 ./arp_scan -h
 Bu komut, programın nasıl kullanılacağı hakkında bilgi verir.
