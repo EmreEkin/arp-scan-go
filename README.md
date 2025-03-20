@@ -16,26 +16,26 @@ Seçenekler:
 1. -range <IP aralığı>: Taranacak IP aralığını belirtir. Varsayılan olarak 192.168.1.0/24 kullanılır.
 2. -vendor: MAC adresinin üretici bilgilerini gösterir. Bu bayrak belirtilmezse, sadece IP ve MAC adresi yazdırılır.
 3. -h: Kullanım bilgilerini gösterir.
-Örnek Kullanımlar:
+<mark>Örnek Kullanımlar:<mark>
 Sadece IP ve MAC Adreslerini Gösterme: Belirtilen IP aralığındaki cihazların IP ve MAC adreslerini görmek için:
 
 
 ```
 ./arp_scan -range 192.168.1.0/24
-* Bu komut, IP aralığındaki her cihazın IP ve MAC adreslerini listeler. *
+_Bu komut, IP aralığındaki her cihazın IP ve MAC adreslerini listeler._
 ```
-* MAC Vendor Bilgisiyle Gösterme: Eğer her cihazın MAC adresinin üretici bilgisini de görmek isterseniz: *
+_MAC Vendor Bilgisiyle Gösterme: Eğer her cihazın MAC adresinin üretici bilgisini de görmek isterseniz:_
 
 ```
 ./arp_scan -range 192.168.1.0/24 -vendor
-* Bu komut, her cihazın IP ve MAC adresinin yanı sıra, MAC adresinin üreticisini (vendor) de listeler. *
+_ Bu komut, her cihazın IP ve MAC adresinin yanı sıra, MAC adresinin üreticisini (vendor) de listeler. _
 ```
 ```
 ./arp_scan -h
-* Bu komut, programın nasıl kullanılacağı hakkında bilgi verir.
+_Bu komut, programın nasıl kullanılacağı hakkında bilgi verir._
 ```
-### Örnek Çıktılar:
-* MAC Vendor Bilgisi ile Çıktı:
+<mark> ### Örnek Çıktılar: <mark> 
+_MAC Vendor Bilgisi ile Çıktı:_
 
 ```
 IP: 192.168.1.1 - MAC: 00:11:22:33:44:55 - Üretici: Cisco Systems
