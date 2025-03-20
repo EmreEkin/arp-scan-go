@@ -7,6 +7,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"net/netip"
 	"os"
 	"strings"
 	"time"
@@ -45,7 +46,7 @@ func getDefaultInterface() (*net.Interface, error) {
 			return &iface, nil
 		}
 	}
-	return nil, fmt.Errorf("uygun ağ arayüzü bulunamadi")
+	return nil, fmt.Errorf("uygun ag arayuzu bulunamadi")
 }
 
 func parseIPRange(rangeStr string) ([]string, error) {
@@ -64,51 +65,63 @@ func parseIPRange(rangeStr string) ([]string, error) {
 }
 
 func main() {
-	// Flag
-	rangeFlag := flag.String("range", "192.168.1.0/24", "Taranacak IP araligi belirle (örn: 192.168.1.0/24)")
-	showVendor := flag.Bool("vendor", false, "MAC üretici bilgisini göster")
-	help := flag.Bool("h", false, "Kullanim bilgilerini göster")
+	showVendor := flag.Bool("vendor", false, "MAC uretici bilgisini goster")
+	rangeFlag := flag.String("range", "192.168.1.0/24", "Taranacak IP araligi")
+	help := flag.Bool("h", false, "Kullanim bilgilerini goster")
 	flag.Parse()
 
-	// Yardım
 	if *help {
-		fmt.Println("Kullanim: ./arp_scan [seçenekler]")
-		fmt.Println("Seçenekler:")
-		fmt.Println("  -vendor  MAC üretici bilgisini göster")
-		fmt.Println("  -range   Taranacak IP araligi belirle (örn: 192.168.1.0/24)")
-		fmt.Println("  -h       Kullanim bilgilerini göster")
+		fmt.Println("Kullanim: ./arp_scan [secenekler]")
+		fmt.Println("Secenekler:")
+		fmt.Println("  -vendor  MAC uretici bilgisini goster")
+		fmt.Println("  -range   Taranacak IP araligini belirle (orn: 192.168.1.0/24)")
+		fmt.Println("  -h       Kullanim bilgilerini goster")
 		os.Exit(0)
 	}
 
-	// Ağ arayüzü
+	//ag arayuzu bul
 	iface, err := getDefaultInterface()
 	if err != nil {
 		log.Fatalf("Ag arayuzu bulunamadi: %v", err)
 	}
+
 	fmt.Printf("Kullanilan arayuz: %s\n", iface.Name)
 
-	// ARP istemcisi
-	client, err := arp.New(iface)
+	// Packet Listener olustur
+	packetConn, err := net.ListenPacket("ethernet", iface.Name)
 	if err != nil {
-		log.Fatalf("ARP istemcisi olusturulamadi: %v", err)
+		log.Fatalf("Packet listener oluşturulamadı: %v", err)
+	}
+	defer packetConn.Close()
+
+	// ARP istemcisi olustur
+	client, err := arp.New(iface, packetConn)
+	if err != nil {
+		log.Fatalf("ARP istemcisi oluşturulamadı: %v", err)
 	}
 	defer client.Close()
 
-	// IP araligi parse
+	// Kullanici gelen IP araligi
 	ips, err := parseIPRange(*rangeFlag)
 	if err != nil {
-		log.Fatalf("Gecersiz IP araligi: %v", err)
+		log.Fatalf("Geçersiz IP aralığı: %v", err)
 	}
 
 	// IP araligi
 	for _, ip := range ips {
-		parsedIP := net.ParseIP(ip)
-		mac, err := client.Resolve(parsedIP)
+		// IP'yi `netip.Addr` formatina cevir
+		parsedAddr, err := netip.ParseAddr(ip)
+		if err != nil {
+			log.Printf("Geçersiz IP adresi: %s\n", ip)
+			continue
+		}
+
+		// ARP istegi
+		mac, err := client.Resolve(parsedAddr)
 		if err != nil {
 			continue
 		}
 
-		//MAC adresi ve IP araligi
 		if *showVendor {
 			vendor, err := getMacVendor(mac.String())
 			if err != nil {
